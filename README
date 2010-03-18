@@ -1,0 +1,21 @@
+This is a work in progress. I don't recommend using it in a production environment.
+
+HOW TO MAKE IT WORK
+
+1. Copy the dynamic_json directoy to the extensions folder of your Symphony CMS installation. You do not need to enable this extension in the Symphony admin to make it work.
+
+2. Create a new datasource from the admin. Select the "Dynamic XML" datasource type and enter the URL of your JSON data.
+
+3. Open the new datasource file in your workspace/data-sources/ in your favorite editor.
+
+4. Look inside the "grab" method and change this line:
+
+include(TOOLKIT . '/data-sources/datasource.dynamic_xml.php');
+
+to this:
+
+include(EXTENSIONS . '/dynamic_json/lib/datasource.dynamic_json.php');
+
+5. Save it and your done.
+
+NOTE: If you make any changes to the datasource from the admin you will need to change the include again.
