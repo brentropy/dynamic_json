@@ -73,7 +73,7 @@
 			if ($info['content_type'] == 'application/json')
 			{
 				require_once EXTENSIONS.'/dynamic_json/lib/class.json_to_xml.php';
-				$xml = JSON_to_XML::convert($xml);
+				$xml = Json_to_xml::convert($xml);
 			}
 			
 			$xml = trim($xml);

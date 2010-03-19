@@ -1,6 +1,6 @@
 <?php
  
-class Extension_Dynamic_JSON extends Extension
+class Extension_dynamic_json extends Extension
 {
 	public function about()
 	{
