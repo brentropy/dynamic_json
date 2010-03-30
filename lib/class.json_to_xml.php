@@ -47,6 +47,7 @@ class Json_to_xml
 			$vars = get_object_vars($data);
 			foreach ($vars as $key => $value)
 			{
+				$key = self::_valid_element_name($key);
 				$var_element = self::_process($value, self::$dom->createElement($key));
 				$element->appendChild($var_element);
 			}
@@ -56,5 +57,12 @@ class Json_to_xml
 			$element->appendChild(self::$dom->createTextNode($data));
 		}
 		return $element;
+	}
+	
+	private static function _valid_element_name($name)
+	{
+		$name = preg_replace('/^(.*?)(xml)([a-z])/i', '$3', $name);
+		$name = preg_replace('/[^a-z0-9_\-]/i', '', $name);
+		return $name;
 	}
 }
