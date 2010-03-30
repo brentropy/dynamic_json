@@ -70,7 +70,7 @@
 			Mutex::release($cache_id, TMP);
 			
 			// check to see if it is JSON and convert it to XML
-			if ($info['content_type'] == 'application/json')
+			if (preg_match('/(json|javascript)/i', $info['content_type']))
 			{
 				require_once EXTENSIONS.'/dynamic_json/lib/class.json_to_xml.php';
 				$xml = Json_to_xml::convert($xml);
@@ -78,7 +78,7 @@
 			
 			$xml = trim($xml);
 
-			if((int)$info['http_code'] != 200 || !preg_match('/(xml|plain|text|json)/i', $info['content_type'])){
+			if((int)$info['http_code'] != 200 || !preg_match('/(xml|plain|text|json|javascript)/i', $info['content_type'])){
 				
 				$writeToCache = false;
 				
@@ -124,7 +124,8 @@
 				else{
 					$result = new XMLElement($this->dsParamROOTELEMENT);
 					$result->setAttribute('valid', 'false');
-					$result->appendChild(new XMLElement('error', __('XML returned is invalid.')));
+					//$result->appendChild(new XMLElement('error', __('XML returned is invalid.')));
+					$result->appendChild(new XMLElement('error', __('<![CDATA['.$xml.']]>')));
 				}
 				
 			}

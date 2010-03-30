@@ -15,6 +15,17 @@ class Json_to_xml
 	{
 		self::$dom = new DomDocument('1.0', 'utf-8');
 		self::$dom->formatOutput = TRUE;
+		
+		// remove callback functions from JSONP
+		if (preg_match('/(\{|\[).*(\}|\])/s', $json, $matches))
+		{
+			$json = $matches[0];
+		}
+		else
+		{
+			$json = '{"error": "JSON not formatted correctly"}';
+		}
+		
 		$data = json_decode($json);
 		$data_element = self::_process($data, self::$dom->createElement('data'));
 		self::$dom->appendChild($data_element);
