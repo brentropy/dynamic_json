@@ -11,9 +11,9 @@ class Json_to_xml
 {
 	private static $dom;
 	
-	public static function convert($json)
+	public static function convert($json, $return = 'document')
 	{
-		self::$dom = new DomDocument('1.0', 'utf-8');
+		self::$dom = new DOMDocument('1.0', 'utf-8');
 		self::$dom->formatOutput = TRUE;
 		
 		// remove callback functions from JSONP
@@ -23,13 +23,19 @@ class Json_to_xml
 		}
 		else
 		{
-			$json = '{"error": "JSON not formatted correctly"}';
+			throw new Exception('JSON not formatted correctly');
 		}
 		
 		$data = json_decode($json);
 		$data_element = self::_process($data, self::$dom->createElement('data'));
 		self::$dom->appendChild($data_element);
-		return self::$dom->saveXML();
+		
+		switch ($return)
+		{
+			case 'fragment': return self::$dom->saveXML($data_element);
+			case 'object': return self::$dom;
+			default: return self::$dom->saveXML();
+		}
 	}
 	
 	private static function _process($data, $element)
